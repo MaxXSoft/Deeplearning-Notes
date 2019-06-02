@@ -167,3 +167,5 @@
 该部分中，我将之前编写的，基于 Python + NumPy 实现的 MNIST 模型使用 NNVM 编译到了目标代码，并且运行了编译结果以验证模型到 NNVM 计算图的转换过程无误。
 
 如需查看运行结果，请执行“nnvm_mnist/basic/nnvm_test.py”。
+
+简单测试请执行“nnvm_mnist/basic/reco.py”。
