@@ -4,4 +4,4 @@ Some notes about deeplearning (TVM).
 
 ## License
 
-Copyright (C) 2018-2019 MaxXing.
+Copyright (C) 2010-2019 MaxXing.
