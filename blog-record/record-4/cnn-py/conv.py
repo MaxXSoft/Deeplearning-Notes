@@ -120,9 +120,9 @@ class ConvLayer(Layer):
             # update gradients
             cur_dz = dz[i, y, x, k]
             dm_pad[v_start:v_end, h_start:h_end, :] += kernel[..., k] * cur_dz
-            dk[..., c] += mat_slice * cur_dz
-            db[..., c] += cur_dz
-      dmat[i, ...] = dm_pad[pad:-pad, pad:-pad, :]
+            dk[..., k] += mat_slice * cur_dz
+            db[..., k] += cur_dz
+      dmat[i, ...] = dm_pad[pad:-pad, pad:-pad, :] if pad else dm_pad
     assert dmat.shape == (n, h, w, c)
     return dmat, dk, db
 
