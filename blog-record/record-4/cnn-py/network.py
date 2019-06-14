@@ -27,10 +27,11 @@ class Network:
 
   def train(self, expect_in, expect_out, count, alpha):
     for i in range(count):
-      print(f'{i + 1}/{count}')
+      print('%5d/%5d\r' % (i + 1, count), end='')
       out = self.forward(expect_in)
       self.__backprop(out, expect_out)
       self.__gradient(alpha)
+    print()
 
   def dump(self, file):
     with open(file, 'wb') as f:
