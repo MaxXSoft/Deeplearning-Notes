@@ -1,7 +1,8 @@
 import numpy as np
+from layer import Layer
 
 
-def pool(mat_nhwc, **kwargs):
+def __pool(mat_nhwc, **kwargs):
   # extract shapes
   n, h, w, c = mat_nhwc.shape
   # extract params
@@ -36,17 +37,17 @@ def pool(mat_nhwc, **kwargs):
   return z, cache
 
 
-def get_pool_mask(x):
+def __get_pool_mask(x):
   return x == np.max(x)
 
 
-def distribute_value(dz, shape):
+def __distribute_value(dz, shape):
   h, w = shape
   average = dz / (h * w)
   return np.ones(shape) * average
 
 
-def pool_back(dz, cache, mode=None):
+def __pool_back(dz, cache, mode=None):
   # extract cache
   mat, args = cache
   # extract params
@@ -74,29 +75,61 @@ def pool_back(dz, cache, mode=None):
           cur_dz = dz[i, y, x, k]
           if mode == 'max':
             cur_slice = cur_mat[v_start:v_end, h_start:h_end, k]
-            mask = get_pool_mask(cur_slice)
+            mask = __get_pool_mask(cur_slice)
             dmat[i, v_start:v_end, h_start:h_end,
                  k] += np.multiply(mask, cur_dz)
           elif mode == 'average':
             dmat[i, v_start:v_end, h_start:h_end,
-                 k] += distribute_value(cur_dz, (f, f))
+                 k] += __distribute_value(cur_dz, (f, f))
   assert dmat.shape == mat.shape
   return dmat
+
+
+# pooling layer
+class PoolLayer(Layer):
+  def __init__(self, **kwargs):
+    '''
+    constructor of pooling layer
+
+    Parameters
+    ---
+    f: int
+      kernel width
+    
+    stride: int
+      stride of pooling process
+    
+    mode: str
+      pooling mode, 'max' or 'average'
+    '''
+    self.__params = kwargs
+    self.__cache = None
+
+  def forward(self, x):
+    z, cache = __pool(x, **self.__params)
+    self.__cache = cache
+    return z
+
+  def backprop(self, d):
+    return __pool_back(d, self.__cache)
+
+  def gradient(self, alpha):
+    pass
 
 
 if __name__ == '__main__':
   np.random.seed(1)
   A_prev = np.random.randn(5, 5, 3, 2)
   args = {"stride": 1, "f": 2}
-  A, cache = pool(A_prev, **args)
+  A, cache = __pool(A_prev, **args)
   dA = np.random.randn(5, 4, 2, 2)
 
-  dA_prev = pool_back(dA, cache, mode="max")
+  dA_prev = __pool_back(dA, cache, mode="max")
   print("mode = max")
   print('mean of dA = ', np.mean(dA))
-  print('dA_prev[1,1] = ', dA_prev[1,1])  
+  print('dA_prev[1,1] = ', dA_prev[1, 1])
   print()
-  dA_prev = pool_back(dA, cache, mode="average")
+  dA_prev = __pool_back(dA, cache, mode="average")
   print("mode = average")
   print('mean of dA = ', np.mean(dA))
-  print('dA_prev[1,1] = ', dA_prev[1,1]) 
+  print('dA_prev[1,1] = ', dA_prev[1, 1])
