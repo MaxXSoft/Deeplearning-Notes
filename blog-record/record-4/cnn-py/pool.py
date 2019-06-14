@@ -2,23 +2,23 @@ import numpy as np
 from layer import Layer
 
 
-# pooling layer
 class PoolLayer(Layer):
-  def __init__(self, **kwargs):
-    '''
-    constructor of pooling layer
+  '''
+  pooling layer
 
-    Parameters
-    ---
-    f: int
-      kernel width
-    
-    stride: int
-      stride of pooling process
-    
-    mode: str
-      pooling mode, 'max' or 'average'
-    '''
+  Parameters
+  ---
+  f: int
+    kernel width
+  
+  stride: int
+    stride of pooling process
+  
+  mode: str
+    pooling mode, 'max' or 'average'
+  '''
+
+  def __init__(self, **kwargs):
     self.__params = kwargs
     self.__cache = None
 

@@ -2,32 +2,32 @@ import numpy as np
 from layer import Layer
 
 
-# convolutional layer
 class ConvLayer(Layer):
+  '''
+  convolutional layer
+
+  Parameters
+  ---
+  ih: int
+    input height
+
+  iw: int
+    input width
+
+  ic: int
+    input channel
+
+  f: int
+    kernel width
+
+  oc: int
+    output channel
+
+  kwargs: dict
+    params like 'pad' and 'stride'
+  '''
+
   def __init__(self, ih, iw, ic, f, oc, **kwargs):
-    '''
-    constructor of convolutional layer
-
-    Parameters
-    ---
-    ih: int
-      input height
-
-    iw: int
-      input width
-
-    ic: int
-      input channel
-
-    f: int
-      kernel width
-
-    oc: int
-      output channel
-
-    kwargs: dict
-      params like 'pad' and 'stride'
-    '''
     self.__kernel = np.random.randn(f, f, ic, oc) * 0.01
     self.__bias = np.zeros((1, 1, 1, oc))
     self.__params = kwargs
@@ -140,4 +140,3 @@ class ConvLayer(Layer):
   def gradient(self, alpha):
     self.__kernel -= alpha * self.__dk
     self.__bias -= alpha * self.__db
-    pass
