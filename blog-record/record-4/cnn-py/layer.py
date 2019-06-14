@@ -5,7 +5,13 @@ class Layer:
 
     Parameters
     ---
-    x:  input from last layer
+    x: matrix
+      input from last layer
+
+    Returns
+    ---
+    out: matrix
+      output of current layer
     '''
     raise NotImplementedError
 
@@ -15,7 +21,13 @@ class Layer:
 
     Parameters
     ---
-    d:  derivation from next layer
+    d: matrix
+      derivation from next layer
+
+    Returns
+    ---
+    out_d: matrix
+      derivation of current layer
     '''
     raise NotImplementedError
 
@@ -25,6 +37,10 @@ class Layer:
 
     Parameters
     ---
-    alpha:  learning rate
+    alpha: float
+      learning rate
+
+    Returns:
+      None
     '''
     raise NotImplementedError

@@ -101,17 +101,23 @@ class ConvLayer(Layer):
 
     Parameters
     ---
-    ih:     input height
+    ih: int
+      input height
 
-    iw:     input width
+    iw: int
+      input width
 
-    ic:     input channel
+    ic: int
+      input channel
 
-    f:      kernel width
+    f: int
+      kernel width
 
-    oc:     output channel
+    oc: int
+      output channel
 
-    kwargs: params like 'pad' and 'stride'
+    kwargs: dict
+      params like 'pad' and 'stride'
     '''
     self.__kernel = np.random.randn(f, f, ic, oc)
     self.__bias = np.zeros((1, 1, 1, oc))
