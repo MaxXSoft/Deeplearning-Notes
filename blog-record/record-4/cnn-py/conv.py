@@ -119,7 +119,7 @@ class ConvLayer(Layer):
     kwargs: dict
       params like 'pad' and 'stride'
     '''
-    self.__kernel = np.random.randn(f, f, ic, oc)
+    self.__kernel = np.random.randn(f, f, ic, oc) * 0.01
     self.__bias = np.zeros((1, 1, 1, oc))
     self.__params = kwargs
     self.__cache = None
