@@ -1,4 +1,6 @@
 from struct import pack, unpack
+from os.path import join as pathjoin
+import pickle
 
 
 def parse_idx1(file):
@@ -31,3 +33,18 @@ def parse_idx3(file):
         img.append(l)
       images.append(img)
     return images
+
+
+def dump_dataset(path, tag, file):
+  img_file = pathjoin(path, f'{tag}-images-idx3-ubyte')
+  lbl_file = pathjoin(path, f'{tag}-labels-idx1-ubyte')
+  img = parse_idx3(img_file)
+  lbl = parse_idx1(lbl_file)
+  with open(file, 'wb') as f:
+    pickle.dump((img, lbl), f)
+
+
+def load_dataset(file):
+  with open(file, 'rb') as f:
+    img, lbl = pickle.load(f)
+  return img, lbl
